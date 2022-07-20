@@ -5,7 +5,6 @@ static u8  fac_us=0;							//us延时倍乘数
 static u16 fac_ms=0;							//ms延时倍乘数,在os下,代表每个节拍的ms数
 
 //初始化延迟函数
-//当使用OS的时候,此函数会初始化OS的时钟节拍
 //SYSTICK的时钟固定为AHB时钟的1/8
 //SYSCLK:系统时钟频率
 void delay_init(void)
@@ -38,7 +37,7 @@ void delay_us(u32 nus)
 //nms<=0xffffff*8*1000/SYSCLK
 //SYSCLK单位为Hz,nms单位为ms
 //对168M条件下,nms<=798ms
-void delay_xms(u16 nms)
+static void delay_xms(u16 nms)
 {
 	u32 temp;
 	SysTick->LOAD=(u32)nms*fac_ms;			//时间加载(SysTick->LOAD为24bit)
